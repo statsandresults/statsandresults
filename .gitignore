@@ -29,3 +29,5 @@ phpunit.phar
 /yii
 
 /composer.lock
+/php.cmd
+/yii.bat
