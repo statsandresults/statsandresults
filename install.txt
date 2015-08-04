@@ -1,0 +1,6 @@
+
+Yii2-user can be installed using composer. Run following command to download and install Yii2-user:
+composer require "dektrium/yii2-user:dev-master"
+
+Yii2-user update database schema
+php yii migrate/up --migrationPath=@vendor/dektrium/yii2-user/migrations
