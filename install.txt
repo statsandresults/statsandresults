@@ -1,6 +1,24 @@
 
 Yii2-user can be installed using composer. Run following command to download and install Yii2-user:
-composer require "dektrium/yii2-user:dev-master"
+# composer require "dektrium/yii2-user:dev-master"
 
 Yii2-user update database schema
-php yii migrate/up --migrationPath=@vendor/dektrium/yii2-user/migrations
+# php yii migrate/up --migrationPath=@vendor/dektrium/yii2-user/migrations
+
+Install dektrium/yii2-rbac
+# composer require "dektrium/yii2-rbac:dev-master"
+
+After you downloaded and configured Yii2-rbac, the last thing you need to do is updating your database schema by applying the migration:
+
+$ php yii migrate/up --migrationPath=@yii/rbac/migrations
+
+add this to the project/config/common-local.php  'admins' => ['sotela']  setup user login as admin
+    'modules' => [
+        'user' => [
+            'class' => 'dektrium\user\Module',
+//            'enableUnconfirmedLogin' => true,
+//            'confirmWithin' => 21600,
+//            'cost' => 12,
+            'admins' => ['sotela']
+        ],
+    ],

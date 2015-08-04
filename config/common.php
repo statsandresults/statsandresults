@@ -23,6 +23,9 @@ return [
 //                'User' => 'app\models\User',
             ]
         ],
+        'rbac' => [
+            'class' => 'dektrium\rbac\Module',
+        ],
     ],
     'components' => [
         'db' => [
