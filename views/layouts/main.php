@@ -38,9 +38,9 @@ AppAsset::register($this);
             ['label' => 'Home', 'url' => ['/main/default/index']],
             ['label' => 'Contact', 'url' => ['/main/contact/index']],
             Yii::$app->user->isGuest ?
-                ['label' => 'Login', 'url' => ['/user/default/login']] :
+                ['label' => 'Login', 'url' => ['/user/security/login']] :
                 ['label' => 'Logout (' . Yii::$app->user->identity->username . ')',
-                    'url' => ['/user/default/logout'],
+                    'url' => ['/user/security/logout'],
                     'linkOptions' => ['data-method' => 'post']],
         ],
     ]);

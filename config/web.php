@@ -4,11 +4,11 @@ $config = [
     'id' => 'app',
     'defaultRoute' => 'main/default/index',
     'components' => [
-        'user' => [
+/*        'user' => [
             'identityClass' => 'app\modules\user\models\User',
             'enableAutoLogin' => true,
             'loginUrl' => ['user/default/login'],
-        ],
+        ],*/
         'errorHandler' => [
             'errorAction' => 'main/default/error',
         ],
@@ -17,6 +17,13 @@ $config = [
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
+        ],
+        'view' => [
+            'theme' => [
+                'pathMap' => [
+                    '@dektrium/user/views' => '@app/modules/user/views'
+                ],
+            ],
         ],
     ],
 ];

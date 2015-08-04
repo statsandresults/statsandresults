@@ -14,7 +14,14 @@ return [
             'class' => 'app\modules\main\Module',
         ],
         'user' => [
-            'class' => 'app\modules\user\Module',
+            //'class' => 'app\modules\user\Module',
+            'class' => 'dektrium\user\Module',
+            'controllerMap' => [
+//                'admin' => 'app\modules\user\AdminController'
+            ],
+            'modelMap' => [
+//                'User' => 'app\models\User',
+            ]
         ],
     ],
     'components' => [
