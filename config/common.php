@@ -8,7 +8,13 @@ $params = ArrayHelper::merge(
 
 return [
     'basePath' => dirname(__DIR__),
-    'bootstrap' => ['log'],
+    'bootstrap' => [
+        'log',
+        'app\modules\main\Bootstrap',
+        'app\modules\contact\Bootstrap',
+        'app\modules\bet\Bootstrap'
+    ],
+    'name' => 'Stats And Result',
     'modules' => [
         'main' => [
             'class' => 'app\modules\main\Module',
@@ -17,15 +23,24 @@ return [
             //'class' => 'app\modules\user\Module',
             'class' => 'dektrium\user\Module',
             'controllerMap' => [
-//                'admin' => 'app\modules\user\AdminController'
+                'registration' => 'app\modules\user\controllers\RegistrationController'
             ],
             'modelMap' => [
-//                'User' => 'app\models\User',
+                'RegistrationForm' => 'app\modules\user\models\RegistrationForm',
             ]
         ],
         'rbac' => [
             'class' => 'dektrium\rbac\Module',
         ],
+        'country' => [
+            'class' => 'app\modules\country\Module',
+        ],
+        'contact' => [
+            'class' => 'app\modules\contact\Module',
+        ],
+        'bet' => [
+            'class' => 'app\modules\bet\Module',
+        ]
     ],
     'components' => [
         'db' => [
@@ -37,8 +52,9 @@ return [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
-                '' => 'main/default/index',
-                'contact' => 'main/contact/index',
+/*                '' => 'main/default/index',*/
+/*                'contact' => 'contact/default/index',*/
+
                 '<_a:error>' => 'main/default/<_a>',
                 '<_a:(login|logout)>' => 'user/default/<_a>',
 
@@ -60,6 +76,14 @@ return [
         ],
         'log' => [
             'class' => 'yii\log\Dispatcher',
+            'targets' => [
+                'file' => [
+                    'class' => 'yii\log\FileTarget',
+                ]/*,
+                'db' => [
+                    'class' => 'yii\log\DbTarget',
+                ],*/
+            ]
         ],
     ],
     'params' => $params,

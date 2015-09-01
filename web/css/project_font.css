@@ -1,0 +1,73 @@
+@font-face {
+	font-family: 'project_font';
+	src:url('/fonts/project.eot?lbvr9u');
+	src:url('/fonts/project.eot?#iefixlbvr9u') format('embedded-opentype'),
+	url('/fonts/project.ttf?lbvr9u') format('truetype'),
+	url('/fonts/project.woff?lbvr9u') format('woff'),
+	url('/fonts/project.svg?lbvr9u#project') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+[class^="icon-prj"], [class*=" icon-prj"] {
+	font-family: 'project_font';
+	speak: none;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	line-height: 1;
+
+	/* Better Font Rendering =========== */
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+.icon-prjCalendar:before {
+	content: "\e600";
+}
+.icon-prjClose:before {
+	content: "\e601";
+}
+.icon-prjCreditCard:before {
+	content: "\e602";
+}
+.icon-prjDiscount:before {
+	content: "\e603";
+}
+.icon-prjDropdown:before {
+	content: "\e604";
+}
+.icon-prjExpand:before {
+	content: "\e605";
+}
+.icon-prjGears:before {
+	content: "\e606";
+}
+.icon-prjKing:before {
+	content: "\e607";
+}
+.icon-prjLogin:before {
+	content: "\e608";
+}
+.icon-prjLogout:before {
+	content: "\e60f";
+}
+.icon-prjMaximize:before {
+	content: "\e609";
+}
+.icon-prjMyAccount:before {
+	content: "\e60a";
+}
+.icon-prjPayNow:before {
+	content: "\e60b";
+}
+.icon-prjProgress:before {
+	content: "\e60c";
+}
+.icon-prjRegister:before {
+	content: "\e60d";
+}
+.icon-prjSearchIcon:before {
+	content: "\e60e";
+}

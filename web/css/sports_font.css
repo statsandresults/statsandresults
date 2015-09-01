@@ -1,0 +1,115 @@
+@font-face {
+    font-family: 'sports_font';
+    src:url('/fonts/sports.eot?2afdp');
+    src:url('/fonts/sports.eot?#iefix2afdp') format('embedded-opentype'),
+    url('/fonts/sports.ttf?2afdp') format('truetype'),
+    url('/fonts/sports.woff?2afdp') format('woff'),
+    url('/fonts/sports.svg?2afdp#icomoon') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+[class^="icon-sport"], [class*=" icon-sport"] {
+    font-family: 'sports_font';
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+
+    /* Better Font Rendering =========== */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-sportAmericanFootball:before {
+    content: "\e600";
+}
+.icon-sportBandy:before {
+    content: "\e601";
+}
+.icon-sportBaseball:before {
+    content: "\e602";
+}
+.icon-sportBasketball:before {
+    content: "\e603";
+}
+.icon-sportBoxing:before {
+    content: "\e604";
+}
+.icon-sportChess:before {
+    content: "\e605";
+}
+.icon-sportCricket:before {
+    content: "\e606";
+}
+.icon-sportDarts:before {
+    content: "\e607";
+}
+.icon-sporte-Sports:before {
+    content: "\e608";
+}
+.icon-sportFloorball:before {
+    content: "\e609";
+}
+.icon-sportFootball:before {
+    content: "\e60a";
+}
+.icon-sportGaelicFootball:before {
+    content: "\e60b";
+}
+.icon-sportGolf:before {
+    content: "\e60c";
+}
+.icon-sportGreyhounds:before {
+    content: "\e60d";
+}
+.icon-sportHandball:before {
+    content: "\e60e";
+}
+.icon-sportHurling:before {
+    content: "\e60f";
+}
+.icon-sportIceHockey:before {
+    content: "\e610";
+}
+.icon-sportLottery:before {
+    content: "\e611";
+}
+.icon-sportMMA:before {
+    content: "\e612";
+}
+.icon-sportMotorsport:before {
+    content: "\e613";
+}
+.icon-sportOtherSports:before {
+    content: "\e614";
+}
+.icon-sportPool:before {
+    content: "\e615";
+}
+.icon-sportRugbyLeague:before {
+    content: "\e616";
+}
+.icon-sportRugbyUnion:before {
+    content: "\e617";
+}
+.icon-sportSnooker:before {
+    content: "\e618";
+}
+.icon-sportSpecials:before {
+    content: "\e619";
+}
+.icon-sportTennis:before {
+    content: "\e61a";
+}
+.icon-sportTimer:before {
+    content: "\e61b";
+}
+.icon-sportVolleyball:before {
+    content: "\e61c";
+}
+.icon-sportWinterSports:before {
+    content: "\e61d";
+}
