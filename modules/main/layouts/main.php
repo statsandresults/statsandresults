@@ -28,7 +28,7 @@ AppAsset::register($this);
     <link rel="apple-touch-icon" sizes="144x144" href="/ico/apple-icon-144x144.png">
     <link rel="apple-touch-icon" sizes="152x152" href="/ico/apple-icon-152x152.png">
     <link rel="apple-touch-icon" sizes="180x180" href="/ico/apple-icon-180x180.png">
-    <link rel="icon" type="image/png" sizes="192x192"  href="/ico/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/ico/android-icon-192x192.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/ico/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="96x96" href="/ico/favicon-96x96.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/ico/favicon-16x16.png">
@@ -46,6 +46,7 @@ AppAsset::register($this);
   "name" : <?= \yii\helpers\Json::encode(Yii::$app->name) ?>,
   "url" : <?= \yii\helpers\Json::encode(Yii::$app->getHomeUrl()) ?>
 }
+
 
 
     </script>
@@ -66,7 +67,7 @@ $body_class = 'bv-' . $current_module_id . '-' . $current_controller_id . '-' . 
 <? $this->beginBody() ?>
 <?
 NavBar::begin([
-    'brandLabel' => '<img src="/images/template/logo_statsandresults.png" width="258"'.
+    'brandLabel' => '<img src="/images/template/logo_statsandresults.png" width="258"' .
         ' height="37" alt="STATSANDRESULTS.COM">',
     'brandUrl' => Yii::$app->homeUrl,
     'options' => [
@@ -91,7 +92,7 @@ echo Nav::widget([
                 'url' => ['/user/security/login'],
                 'visible' => Yii::$app->hasModule('user'),
                 'options' => [
-                    'class'=>'icon-prjLogin'
+                    'class' => 'icon-prjLogin'
                 ]
             ] :
             ['label' => Yii::t('main', 'Logout') . ' (' . Html::encode(Yii::$app->user->identity->username) . ')',
@@ -99,7 +100,7 @@ echo Nav::widget([
                 'linkOptions' => ['data-method' => 'post'],
                 'visible' => Yii::$app->hasModule('user'),
                 'options' => [
-                    'class'=>'icon-prjLogout'
+                    'class' => 'icon-prjLogout'
                 ]
             ],
 
@@ -112,7 +113,7 @@ echo Nav::widget([
             'url' => ['/user/registration/register'],
             'visible' => Yii::$app->user->isGuest && Yii::$app->hasModule('user'),
             'options' => [
-                'class'=>'icon-prjRegister'
+                'class' => 'icon-prjRegister'
             ]
         ]
     ],
@@ -136,22 +137,41 @@ NavBar::end();
                     ]
                 ]);
 
+                /**
+                 * @var $DefaultController app\modules\bet\controllers\DefaultController
+                 * @var $PastController app\modules\bet\controllers\PastController
+                 * @var $PredictionsController app\modules\bet\controllers\PredictionsController
+                 * @var $StatisticsController app\modules\bet\controllers\StatisticsController
+                 */
+
                 echo Nav::widget([
                     'options' => ['class' => 'nav nav-tabs web-page-main_betNavItems '],
 
                     'items' => [
                         ['label' => Yii::t('main', 'Live Results'),
                             'url' => ['/bet/default/index'],
-                            'visible' => Yii::$app->hasModule('bet')],
+                            'visible' => Yii::$app->hasModule('bet') &&
+                                !is_null($DefaultController = Yii::$app->getModule('bet')->createControllerByID('default')) &&
+                                $DefaultController->visibleStatus() == 'visible'
+                        ],
                         ['label' => Yii::t('main', 'Past Results'),
                             'url' => ['/bet/past/index'],
-                            'visible' => Yii::$app->hasModule('bet')],
+                            'visible' => Yii::$app->hasModule('bet') &&
+                                !is_null($PastController = Yii::$app->getModule('bet')->createControllerByID('past')) &&
+                                $PastController->visibleStatus() == 'visible'
+                        ],
                         ['label' => Yii::t('main', 'Predictions'),
                             'url' => ['/bet/predictions/index'],
-                            'visible' => Yii::$app->hasModule('bet')],
+                            'visible' => Yii::$app->hasModule('bet') &&
+                                !is_null($PredictionsController = Yii::$app->getModule('bet')->createControllerByID('predictions')) &&
+                                $PredictionsController->visibleStatus() == 'visible'
+                        ],
                         ['label' => Yii::t('main', 'Statistics'),
                             'url' => ['/bet/statistics/index'],
-                            'visible' => Yii::$app->hasModule('bet')],
+                            'visible' => Yii::$app->hasModule('bet') &&
+                                !is_null($StatisticsController = Yii::$app->getModule('bet')->createControllerByID('statistics')) &&
+                                $StatisticsController->visibleStatus() == 'visible'
+                        ],
                     ]
                 ]);
 

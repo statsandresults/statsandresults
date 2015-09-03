@@ -4,14 +4,14 @@ error_reporting(E_ALL & ~E_NOTICE);
 
 set_time_limit(60);
 
-define('PATH_RUNTIME', dirname(__DIR__).DIRECTORY_SEPARATOR.'runtime');
-define('PATH_RUNTIME_SPORTS', PATH_RUNTIME.DIRECTORY_SEPARATOR.'cron'.DIRECTORY_SEPARATOR.'sports');
-define('PATH_RUNTIME_LIVE', PATH_RUNTIME.DIRECTORY_SEPARATOR.'cron'.DIRECTORY_SEPARATOR.'live');
+define('PATH_RUNTIME', dirname(__DIR__) . DIRECTORY_SEPARATOR . 'runtime');
+define('PATH_RUNTIME_SPORTS', PATH_RUNTIME . DIRECTORY_SEPARATOR . 'cron' . DIRECTORY_SEPARATOR . 'sports');
+define('PATH_RUNTIME_LIVE', PATH_RUNTIME . DIRECTORY_SEPARATOR . 'cron' . DIRECTORY_SEPARATOR . 'live');
 
-if(!is_dir(PATH_RUNTIME_SPORTS)) {
+if (!is_dir(PATH_RUNTIME_SPORTS)) {
     mkdir(PATH_RUNTIME_SPORTS, 0777, true);
 }
-if(!is_dir(PATH_RUNTIME_LIVE)) {
+if (!is_dir(PATH_RUNTIME_LIVE)) {
     mkdir(PATH_RUNTIME_LIVE, 0777, true);
 }
 
@@ -24,14 +24,14 @@ function str_replace_first($search, $replace, $subject)
     return $subject;
 }
 
-function apiReadUrlXml($url, $data=[])
+function apiReadUrlXml($url, $data = [])
 {
 
-/*    $url = $_REQUEST['url'];//'http://212.38.167.37/resultsproxy/getresultsxml3.aspx';
+    /*    $url = $_REQUEST['url'];//'http://212.38.167.37/resultsproxy/getresultsxml3.aspx';
 
-    $data = array(    'loc' => 'ru-RU',
-    'action' => 'GETSPORTS'
-    );*/
+        $data = array(    'loc' => 'ru-RU',
+        'action' => 'GETSPORTS'
+        );*/
 
     if (!extension_loaded('curl')) {
         throw new \ErrorException('cURL library is not loaded');
@@ -79,11 +79,17 @@ function apiParseXml($xml_string)
 
 function obj2array($res)
 {
-    if (is_object($res)) $res = get_object_vars($res);
-    while (list($key, $value) = each($res)) {
-        if (is_object($value) || is_array($value)) {
-            $res[$key] = obj2array($value);
+    if (is_object($res)) {
+        $res = get_object_vars($res);
+    }
+    if (is_array($res)) {
+        while (list($key, $value) = each($res)) {
+            if (is_object($value) || is_array($value)) {
+                $res[$key] = obj2array($value);
+            }
         }
+    } else {
+        $res = [];
     }
     return $res;
 }

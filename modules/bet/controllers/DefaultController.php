@@ -121,4 +121,10 @@ class DefaultController extends Controller
         return $this->render('index');
     }
 
+    /**
+     * @return string visible|hidden
+     */
+    public function visibleStatus() {
+        return 'visible';
+    }
 }

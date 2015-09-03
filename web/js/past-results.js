@@ -22,6 +22,14 @@ jQuery(document).ready(function () {
 
         $calendarLine = jQuery('.pr-filter-inline-calendar'),
 
+        pageLoading = false,
+
+        pageInfo = {
+            count: 0,
+            page: 0,
+            totalpages: 0
+        },
+
         _Cookies = Cookies.noConflict(),
         cookieLifeTime = 1,   //number of days
         cookieName = 'past_results_sports',
@@ -310,11 +318,11 @@ jQuery(document).ready(function () {
             $calendarLine.find('li[data-date]').each(function (id, item) {
                 "use strict";
 
+                item.dataset.date = fromDate.format(dateFormat);
+
                 var $item = jQuery(item),
                     itemDate = moment(item.dataset.date),
                     $a = $item.find('a');
-
-                item.dataset.date = fromDate.format(dateFormat);
 
                 $a.empty().
                     append(itemDate.format('D MMMM')).
@@ -365,38 +373,73 @@ jQuery(document).ready(function () {
 
         getResults = function () {
 
-            var ch = document.getElementById('drSelect').checked,
-                cDateA = jQuery('.pr-filter-inline-calendar').find('li.active'),
-                cDate = cDateA.length == 1 ? cDateA[0].dataset.date : moment(new Date()).format(dateFormat),
-                data = {
-                    'sports': (function () {
-                        "use strict";
-                        var r = [];
-                        for (var k in postData.sports) {
-                            if (postData.sports[k] === true) {
-                                r.push(k);
-                            }
-                        }
-                        return r.join(',');
-                    })(),
-                    'search': document.getElementById('ffsrInput').value.trim(),
-                    'dateFrom': (ch ? document.getElementById('drFrom').value : cDate),
-                    'dateTo': (ch ? document.getElementById('drTo').value : cDate),
-                    'page': 1
-                };
+            if (pageInfo.page == 0 || pageInfo.page < pageInfo.totalpages) {
 
-            jQuery.ajax({
-                url: "/bet/past-results/rest",
-                cache: false,
-                dataType: 'json',
-                data: data,
-                method: 'POST',
-                success: function (json) {
-                    jQuery('.bet-past-index .pr-filter-content').html(
-                        json.content.join('')
-                    );
-                }
-            });
+                pageLoading = true;
+
+                var ch = document.getElementById('drSelect').checked,
+                    cDateA = jQuery('.pr-filter-inline-calendar').find('li.active'),
+                    cDate = cDateA.length == 1 ? cDateA[0].dataset.date : moment(new Date()).format(dateFormat),
+                    data = {
+                        '_csrf': document.getElementById('past-results-form').elements['_csrf'].value,
+                        'past-results-form': {
+                            'sports': (function () {
+                                "use strict";
+                                var r = [];
+                                for (var k in postData.sports) {
+                                    if (postData.sports.hasOwnProperty(k) && postData.sports[k] === true) {
+                                        r.push(k);
+                                    }
+                                }
+                                return r.join(',');
+                            })(),
+                            'search': document.getElementById('ffsrInput').value.trim(),
+                            'dateFrom': (ch ? document.getElementById('drFrom').value : cDate),
+                            'dateTo': (ch ? document.getElementById('drTo').value : cDate),
+                            'page': parseInt(pageInfo.page) + 1
+                        }
+                    };
+
+                jQuery.ajax({
+                    url: "/bet/past-results/rest",
+                    cache: false,
+                    dataType: 'json',
+                    data: data,
+                    method: 'POST'
+                }).done(function (json) {
+                    "use strict";
+                    if (json.status == 2) {
+                        jQuery('.bet-past-index .pr-filter-content').html(
+                            '<h3 class="errors no-results-for-criteria">' + json.errors.join('</h3><h3>') + '</h3>'
+                        );
+                    } else if (json.status == 0) {
+                        jQuery('.bet-past-index .pr-filter-content').html(
+                            '<h3 class="errors">' + json.errors.join('</h3><h3>') + '</h3>'
+                        );
+                    } else if (json.status == 3) {
+                    } else {
+                        if (json.total.page == 1) {
+                            jQuery('.bet-past-index .pr-content-table').html(
+                                json.content.join('')
+                            );
+                        } else {
+                            jQuery('.bet-past-index .pr-content-table table > tbody').append(
+                                json.content.join('')
+                            );
+                        }
+                    }
+                    pageInfo = json.total;
+                    pageInfo.count = parseInt(pageInfo.count);
+                    pageInfo.page = parseInt(pageInfo.page);
+                    pageInfo.totalpages = parseInt(pageInfo.totalpages);
+
+                    pageLoading = false;
+                }).always(function (json) {
+                    "use strict";
+
+                    pageLoading = false;
+                });
+            }
         };
 
     jQuery('#drSelect:checkbox').on('change', dateRangeToggle);
@@ -417,10 +460,16 @@ jQuery(document).ready(function () {
 
         event.preventDefault();
 
+        jQuery('.bet-past-index .pr-content-table').empty();
+
         jQuery('.pr-filter-form-search')[0].reset();
         jQuery('.pr-filter-date-range')[0].reset();
 
         updateCalendarLine(todayDate.format(dateFormat));
+
+        calendarOnClick({
+            currentTarget: document.getElementsByClassName('pr-filter-inline-calendar')[0].children[0].children[7]
+        });
 
         return false;
     });
@@ -429,6 +478,14 @@ jQuery(document).ready(function () {
         "use strict";
 
         event.preventDefault();
+
+        jQuery('.bet-past-index .pr-content-table').empty();
+
+        pageInfo = {
+            count: 0,
+            page: 0,
+            totalpages: 0
+        };
 
         getResults();
 
@@ -481,5 +538,26 @@ jQuery(document).ready(function () {
     }
 
     updateCalendarLine(todayDate.format(dateFormat));
+    calendarOnClick({
+        currentTarget: document.getElementsByClassName('pr-filter-inline-calendar')[0].children[0].children[7]
+    });
     redrawSports();
+
+    jQuery(window).scroll(function () {
+
+        if (pageInfo.totalpages > 0 && pageInfo.page < pageInfo.totalpages && pageLoading === false) {
+            var wHeight = jQuery(document).height(),
+                wScrollTop = jQuery(window).scrollTop(),
+                posPercent = 100 / wHeight * wScrollTop,
+                loadOnPercent = 80;
+
+            if (posPercent > loadOnPercent) {
+                console.log($(window).scrollTop(), posPercent);
+                getResults();
+            }
+
+        }
+
+    });
+
 });

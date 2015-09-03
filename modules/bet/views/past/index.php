@@ -1,8 +1,10 @@
 <?
 
+use yii\bootstrap\ActiveForm;
 use yii\helpers\Html;
 use yii\web\NotFoundHttpException;
 use yii\web\View;
+use app\modules\bet\models\FilterPastResults;
 
 /* @var $this yii\web\View */
 $this->title = 'Past Results';
@@ -58,13 +60,22 @@ $s1 = json_encode($showFilter);
 $s2 = json_encode($moreFilter);
 $s3 = json_encode($ownerFilter);
 $s4 = json_encode($all);
+
+$model = Yii::createObject([
+    'class' => FilterPastResults::className(),
+    'scenario' => 'filter',
+]);
+
+$itemsCount = intval($model->categoriesPerPage);
+
 $js = <<<JS
 (function() {
     window.objectSports = {
         'first': $s1,
         'more': $s2,
         'owners': $s3,
-        'all': $s4
+        'all': $s4,
+        'itemsPerPage': $itemsCount
     };
 })();
 JS;
@@ -132,23 +143,34 @@ $betModule = Yii::$app->getModule('bet');
             </ul>
             <div class="nev-c-disabled-block"></div>
         </nav>
-        <form class="form-inline pr-filter-date-range" id="drForm">
-            <div class="checkbox pr-form-dr-select">
-                <label>
-                    <input type="checkbox" id="drSelect""> Choose a date range:
-                </label>
-            </div>
-            <div class="form-group pr-form-dr-from">
-                <label for="drFrom">From</label>
-                <input type="date" class="form-control icon-prjCalendar"
-                       id="drFrom" value="<?= $today ?>" max="<?= $today ?>" disabled="disabled">
-            </div>
-            <div class="form-group pr-form-dr-to">
-                <label for="drTo">to</label>
-                <input type="date" class="form-control icon-prjCalendar"
-                       id="drTo" value="<?= $today ?>" max="<?= $today ?>" disabled="disabled">
-            </div>
-        </form>
+        <?
+        $form = ActiveForm::begin([
+            'id' => 'past-results-form',
+            'options' => [
+                'class' => 'form-inline pr-filter-date-range'
+            ],
+            'enableClientValidation' => false,
+            'enableAjaxValidation' => false
+        ]);
+        ?>
+        <!--        <form class="form-inline pr-filter-date-range" id="drForm">
+        -->
+        <div class="checkbox pr-form-dr-select">
+            <label>
+                <input type="checkbox" id="drSelect""> Choose a date range:
+            </label>
+        </div>
+        <div class="form-group pr-form-dr-from">
+            <label for="drFrom">From</label>
+            <input type="date" class="form-control icon-prjCalendar"
+                   id="drFrom" value="<?= $today ?>" max="<?= $today ?>" disabled="disabled">
+        </div>
+        <div class="form-group pr-form-dr-to">
+            <label for="drTo">to</label>
+            <input type="date" class="form-control icon-prjCalendar"
+                   id="drTo" value="<?= $today ?>" max="<?= $today ?>" disabled="disabled">
+        </div>
+        <?php ActiveForm::end(); ?>
     </div>
     <div class="pr-filter-separator"></div>
 
@@ -168,12 +190,7 @@ $betModule = Yii::$app->getModule('bet');
 
 
     <div class="pr-filter-content">
-        <?
-
-        /*                    include_once(__DIR__.DIRECTORY_SEPARATOR.'template.php');
-                            echo filterTemplate('Rugby Union', 'Rugby Union');*/
-
-        ?>
+        <div class="pr-content-table"></div>
     </div>
 
 </div>
